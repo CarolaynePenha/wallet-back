@@ -58,6 +58,8 @@ app.post("/sign-up", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+//To Do: validation whith joi to body
 app.post("/sign-in", async (req, res) => {
   //email:,  password:,
   const { password, email } = req.body;
@@ -160,4 +162,59 @@ app.get("/cash", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+app.delete("/cash/:id", async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "").trim();
+
+  if (!token) return res.sendStatus(401);
+  try {
+    const session = await db.collection("session").findOne({ token });
+    if (!session) {
+      res.sendStatus(401);
+    }
+    const validID = await db
+      .collection("cash")
+      .findOne({ _id: new ObjectId(id) });
+    if (validID) {
+      await db.collection("cash").deleteOne({ _id: new ObjectId(id) });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+//To Do: validation whith joi to body
+app.put("/cash/:id", async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "").trim();
+
+  if (!token) return res.sendStatus(401);
+  try {
+    const session = await db.collection("session").findOne({ token });
+    if (!session) {
+      res.sendStatus(401);
+    }
+    const validID = await db
+      .collection("cash")
+      .findOne({ _id: new ObjectId(id) });
+    if (validID) {
+      await db
+        .collection("cash")
+        .updateOne({ _id: new ObjectId(id) }, { $set: req.body });
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
 app.listen(process.env.ACCESS_PORT);
