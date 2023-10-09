@@ -11,8 +11,8 @@ import {
   cashInOutSchema,
   updateCashSchema,
 } from "../Middlewares/validateSchema.js";
-import tokenValidation from "../Middlewares/tokenvalidation.js";
-import { validID } from "../Middlewares/validID.js";
+import tokenValidation from "../Middlewares/tokenValidation.js";
+import { validID } from "../Middlewares/ValidID.js";
 
 const cashRouter = Router();
 
