@@ -23,6 +23,9 @@
     "mongodb": "^6.1.0",
     "uuid": "^9.0.1"
   },
+  "engines": {
+    "node": ">=14 <18.17.1"
+  },
   "devDependencies": {
     "nodemon": "^3.0.1"
   }
