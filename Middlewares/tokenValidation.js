@@ -11,9 +11,10 @@ export default async function tokenValidation(req, res, next) {
     console.log("session: ", session);
     if (!session) {
       res.sendStatus(401);
+      return;
     }
+    next();
   } catch (err) {
     return res.sendStatus(500);
   }
-  next();
 }

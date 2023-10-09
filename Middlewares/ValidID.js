@@ -8,6 +8,7 @@ export async function validID(req, res, next) {
     .findOne({ _id: new ObjectId(id) });
   if (!validID) {
     res.sendStatus(401);
+    return;
   }
   res.locals.validID = validID;
   next();

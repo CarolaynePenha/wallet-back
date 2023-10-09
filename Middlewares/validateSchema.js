@@ -77,7 +77,7 @@ export async function signInSchema(req, res, next) {
 
   const validation = signInSchema.validate(req.body, { abortEarly: false });
   if (validation.error) {
-    res.status(422).send(validation.error.details);
+    res.status(422).send("Invalid e-mail or password");
     return;
   }
   next();

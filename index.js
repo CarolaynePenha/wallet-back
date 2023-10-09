@@ -16,8 +16,8 @@ app.use(cors());
 app.use(authRouter);
 app.use(cashRouter);
 
-// setInterval(async () => {
-//   await expiredToken();
-// }, 15000);
+setInterval(async () => {
+  await expiredToken();
+}, 30000);
 
 app.listen(process.env.ACCESS_PORT);

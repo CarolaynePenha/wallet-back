@@ -9,7 +9,7 @@ export default async function expiredToken() {
       for (let i = 0; i < sessions.length; i++) {
         if (!sessions[i].invalidToken) {
           let date = Date.now();
-          if (date - sessions[i].activeUser > 10000) {
+          if (date - sessions[i].activeUser > 25000) {
             await sessionCollection.updateOne(
               { _id: sessions[i]._id },
               {
@@ -23,5 +23,19 @@ export default async function expiredToken() {
     }
   } catch (err) {
     console.error(err);
+  }
+}
+
+export async function useRemain(req, res) {
+  const { authorization } = req.headers;
+  const token = authorization?.replace("Bearer ", "").trim();
+  try {
+    await db
+      .collection("session")
+      .updateOne({ token }, { $set: { activeUser: Date.now() } });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
 }
